@@ -23,11 +23,7 @@ mix = [
 ]
 
 def filter(i,sources):
-    new = []
-    for elem in sources:
-        if elem[0]==i:
-            new.append(elem)
-    return new
+    return [elem for elem in sources if elem[0]==i]
 
 def extr(tup, sources):
     new = []
@@ -45,9 +41,35 @@ sorted = arrange(files) + files
 unique = []
 [unique.append(elem) for elem in sorted if elem not in unique]
 for c in unique:
-    print(c[0]+" - "+" ".join(c[1]))
+    print(f"{c[0]} - " + " ".join(c[1]))
 
-merge_result = """/*
+license = """/*
+ ------------------------------------------------------------------------------
+ Copyright (c) 2023 Professor Peanut
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ This copyright notice and permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+ ------------------------------------------------------------------------------
+*/
+"""
+
+merge_result = (
+    """/*
   You need to add '#define INCLUDEDB_IMPLEMENTATION' before including this header in ONE source file.
   Like this:
       #define INCLUDEDB_IMPLEMENTATION
@@ -80,33 +102,8 @@ merge_result = """/*
       Let's cook this panutsoup together!!!
       
 */\n\n"""
-
-license = """/*
- ------------------------------------------------------------------------------
- Copyright (c) 2023 Professor Peanut
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- This copyright notice and permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
- ------------------------------------------------------------------------------
-*/
-"""
-
-merge_result += "#ifndef INCLUDEDB_DB_H\n#define INCLUDEDB_DB_H\n\n"
+    + "#ifndef INCLUDEDB_DB_H\n#define INCLUDEDB_DB_H\n\n"
+)
 merge_result += open(config_file, "r").read()
 merge_result += "\n\n#ifdef INCLUDEDB_IMPLEMENTATION\n\n\n"
 for filename in unique:
